@@ -5,11 +5,11 @@ import tornado.websocket
 import os
 import signal
 
-def signint_received(signum,frame):
+def exit_function(signum,frame):
     exit(0)
 
-signal.signal(signal.SIGTERM,signint_received)
-signal.signal(signal.SIGINT,signint_received)
+signal.signal(signal.SIGTERM,exit_function)
+signal.signal(signal.SIGINT,exit_function)
 
 path = os.getcwd()
 
@@ -32,8 +32,8 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
 print(os.path.join(path,'public'))
 TornadoSettings = static_handler_args={'debug':False}
 application = tornado.web.Application([
-    #(r'/command', WebSocketHandler),
-    (r'/*.',tornado.web.StaticFileHandler,{"path":os.path.join(path,"public\\"),"default_filename":"index.html"})
+    (r'/command', WebSocketHandler),
+    (r'/(.*)',tornado.web.StaticFileHandler,{"path":os.path.join(path,"public\\"),"default_filename":"index.html"})
 ],**TornadoSettings)
 
 
