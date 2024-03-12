@@ -29,10 +29,25 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
     def on_message(self,message):
         print(message)
 
+class StaticHandler(tornado.web.StaticFileHandler):
+    def get_content_type(self):
+        _, extension = tornado.web.os.path.splitext(self.absolute_path)
+        
+        mime_types = {
+            ".js": "application/javascript",
+            ".css": "text/css",
+            ".html": "text/html",
+            ".png": "image/png",
+            ".jpg": "image/jpeg",
+            ".svg": "image/svg+xml"
+        }
+        
+        return mime_types.get(extension, "text/plain")
+
 TornadoSettings = static_handler_args={'debug':False}
 application = tornado.web.Application([
     (r'/command', WebSocketHandler),
-    (r'/(.*)',tornado.web.StaticFileHandler,{"path":os.path.join(path,"public\\"),"default_filename":"index.html"})
+    (r'/(.*)',StaticHandler,{"path":os.path.join(path,"public\\"),"default_filename":"index.html"})
 ],**TornadoSettings)
 
 
