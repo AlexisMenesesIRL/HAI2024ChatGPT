@@ -29,7 +29,6 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
     def on_message(self,message):
         print(message)
 
-print(os.path.join(path,'public'))
 TornadoSettings = static_handler_args={'debug':False}
 application = tornado.web.Application([
     (r'/command', WebSocketHandler),
