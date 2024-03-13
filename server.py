@@ -13,7 +13,7 @@ def exit_function(signum,frame):
 signal.signal(signal.SIGTERM,exit_function)
 signal.signal(signal.SIGINT,exit_function)
 
-path = os.getcwd(__file__)
+path = os.path.join(os.path.dirname(__file__))
 
 websockets = {}
 
