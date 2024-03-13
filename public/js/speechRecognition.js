@@ -49,8 +49,12 @@ export const init_speech_recognition = () =>{
     console.log("Inicializando speech recognition");
 }
 
-export const start_reconition=()=>{
+export const start_recognition = ()=>{
     recognition.start();
+}
+
+export const stop_recognition = () =>{
+    recognition.stop();
 }
 
 export const set_process_recognition = callback =>{
