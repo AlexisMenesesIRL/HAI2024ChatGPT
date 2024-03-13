@@ -5,6 +5,8 @@ import tornado.websocket
 import os
 import signal
 
+
+
 def exit_function(signum,frame):
     exit(0)
 
@@ -13,8 +15,16 @@ signal.signal(signal.SIGINT,exit_function)
 
 path = os.getcwd(__file__)
 
+websockets = {}
 
 
+
+def process_message(data,websocket):
+    print(data)
+    if data["action"] == "registerID":
+        websockets[data["id"]] = {"ws" : websocket, "chat_history":[]}
+    else:
+        print("no action")
 class WebSocketHandler(tornado.websocket.WebSocketHandler):
     def open(self):
         print("Websocket abierto")
@@ -25,9 +35,12 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
     def send_data(self,data):
         self.write_message(json.dumps(data))
 
-
     def on_message(self,message):
-        print(message)
+        try:
+            data = json.dumps(message)
+            process_message(data,self)
+        except TypeError:
+            print("error al processar mensaje")
 
 class StaticHandler(tornado.web.StaticFileHandler):
     def get_content_type(self):
