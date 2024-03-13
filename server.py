@@ -11,7 +11,7 @@ def exit_function(signum,frame):
 signal.signal(signal.SIGTERM,exit_function)
 signal.signal(signal.SIGINT,exit_function)
 
-path = os.getcwd()
+path = os.getcwd(__file__)
 
 
 
