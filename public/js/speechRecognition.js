@@ -1,9 +1,9 @@
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let debug = false;
-
+let recognition;
 
 export const init_speech_recognition = () =>{
-    let recognition = new SpeechRecognition();
+    recognition = new SpeechRecognition();
     
     recognition.lang = "es-MX";
     recognition.interimResults = false;
@@ -43,10 +43,11 @@ export const init_speech_recognition = () =>{
             console.log(result);
         }
     }
-
-    recognition.start();
     console.log("Inicializando speech recognition");
+}
 
+export const start_reconition=()=>{
+    recognition.start();
 }
 
 export const enable_debug = _ => debug = true;
