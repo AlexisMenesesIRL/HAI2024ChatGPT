@@ -7,16 +7,43 @@ const recognition_process = data =>{
     document.getElementById("TextDetection").innerText = data;
 }
 
-document.getElementById("BeginRecognition").onmousedown = ()=>{
-    speechRecognition.start_recognition();
-    document.getElementById("BeginRecognition").innerText = "reconociento"
+let recognition_started = false;
+let mouse_hover = true;
+let buttonRecognition = document.getElementById("BeginRecognition");
+
+
+buttonRecognition.onmousedown = ()=>{
+    if(!recognition_started){
+        speechRecognition.start_recognition();
+        recognition_started = true;
+        buttonRecognition.innerText = "reconociento"
+        buttonRecognition.style.background = "#FF0000"
+    }
+    
 }
 
-document.getElementById("BeginRecognition").onmouseup = ()=>{
-    speechRecognition.stop_recognition();
-    document.getElementById("BeginRecognition").innerText = "Empezar reconocimiento"
+buttonRecognition.onmouseup = (e)=>{
+    if(mouse_hover) {
+        speechRecognition.stop_recognition();
+        buttonRecognition.style.background = "#38e08c"
+        buttonRecognition.innerText = "Empezar reconocimiento"
+        recognition_started = false;
+    }
 }
 
+
+document.body.onmousemove = (e) => {
+    let x = e.clientX;
+    let y = e.clientY;
+    let bounding = buttonRecognition.getBoundingClientRect();
+    if(bounding.x < x && bounding.x+bounding.width > x && bounding.y < y &&  bounding.y+bounding.height > y) {
+        mouse_hover = true;
+    }
+    else{
+        mouse_hover = false
+    }
+    console.log(x,y);
+}
 
 
 

@@ -1,3 +1,18 @@
 #BeginRecognition {
-    width: 200px;
+    padding: 10px 20px;
+    width: 250px;
+    font-size: 16px;
+    background-color: #38e08c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.3s;
+}
+
+#TextDetection {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #333;
 }
