@@ -1,6 +1,7 @@
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let debug = false;
 let recognition;
+let process_recognition = data => console.log(data);
 
 export const init_speech_recognition = () =>{
     recognition = new SpeechRecognition();
@@ -40,7 +41,9 @@ export const init_speech_recognition = () =>{
     recognition.onresult = (e)=>{
         let results = e.results;
         for(let result of results){
-            console.log(result);
+            if(result.isFinal){
+                process_recognition(result[0].transcript)
+            }
         }
     }
     console.log("Inicializando speech recognition");
@@ -48,6 +51,10 @@ export const init_speech_recognition = () =>{
 
 export const start_reconition=()=>{
     recognition.start();
+}
+
+export const set_process_recognition = callback =>{
+    process_recognition = callback;
 }
 
 export const enable_debug = _ => debug = true;
