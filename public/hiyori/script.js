@@ -3,7 +3,7 @@ import * as Kalidokit from "../dist";
 const remap = Kalidokit.Utils.remap;
 const clamp = Kalidokit.Utils.clamp;
 const lerp = Kalidokit.Vector.lerp;
-
+console.log(lerp);
 /* THREEJS WORLD SETUP */
 let currentVrm;
 

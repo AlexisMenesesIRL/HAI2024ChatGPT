@@ -12,6 +12,7 @@ const {
     Utils: { clamp },
 } = Kalidokit;
 
+window.lerp = lerp;
 // Url to Live2D
 const modelUrl = "../hiyori/models/hiyori/hiyori_pro_t10.model3.json";
 
@@ -53,13 +54,14 @@ const videoElement = document.querySelector(".input_video"),
     });
 
     // Add mousewheel events to scale model
-    document.querySelector("#live2d").addEventListener("wheel", (e) => {
-        e.preventDefault();
-        currentModel.scale.set(clamp(currentModel.scale.x + event.deltaY * -0.001, -0.5, 10));
-    });
+    // document.querySelector("#live2d").addEventListener("wheel", (e) => {
+    //     e.preventDefault();
+    //     currentModel.scale.set(clamp(currentModel.scale.x + event.deltaY * -0.001, -0.5, 10));
+    // });
 
     // add live2d model to stage
     app.stage.addChild(currentModel);
+    window.currentModel = currentModel;
 })();
 
 const onResults = (results) => {
@@ -73,6 +75,7 @@ const animateLive2DModel = (points) => {
     let riggedFace;
 
     if (points) {
+        console.log("testing");
         // use kalidokit face solver
         riggedFace = Face.solve(points, {
             runtime: "mediapipe",
@@ -143,16 +146,16 @@ const rigFace = (result, lerpAmount = 0.7) => {
         coreModel.setParameterValueById("ParamEyeLOpen", stabilizedEyes.l);
         coreModel.setParameterValueById("ParamEyeROpen", stabilizedEyes.r);
 
-        // mouth
-        coreModel.setParameterValueById(
-            "ParamMouthOpenY",
-            lerp(result.mouth.y, coreModel.getParameterValueById("ParamMouthOpenY"), 0.3)
-        );
-        // Adding 0.3 to ParamMouthForm to make default more of a "smile"
-        coreModel.setParameterValueById(
-            "ParamMouthForm",
-            0.3 + lerp(result.mouth.x, coreModel.getParameterValueById("ParamMouthForm"), 0.3)
-        );
+        // // mouth
+        // coreModel.setParameterValueById(
+        //     "ParamMouthOpenY",
+        //     lerp(result.mouth.y, coreModel.getParameterValueById("ParamMouthOpenY"), 0.3)
+        // );
+        // // Adding 0.3 to ParamMouthForm to make default more of a "smile"
+        // coreModel.setParameterValueById(
+        //     "ParamMouthForm",
+        //     0.3 + lerp(result.mouth.x, coreModel.getParameterValueById("ParamMouthForm"), 0.3)
+        // );
     };
 };
 

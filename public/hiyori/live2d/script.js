@@ -12,6 +12,7 @@ const {
     Utils: { clamp },
 } = Kalidokit;
 
+console.log("testing");
 // Url to Live2D
 const modelUrl = "../models/hiyori/hiyori_pro_t10.model3.json";
 

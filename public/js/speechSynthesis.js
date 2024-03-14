@@ -32,17 +32,21 @@ document.body.onload = () =>{
 
 }
 
+let onendSynthetizer = console.log;
+
+export const set_onEnd_synthetizer = (callback) =>{
+    onendSynthetizer = callback
+}
+
 export const say = (text) =>{
     const current_utterance = new SpeechSynthesisUtterance(text);
     //current_utterance.lang = selected_voice.lang;
     current_utterance.voice = selected_voice;
     current_utterance.pitch = pitch;
     current_utterance.rate = rate;
-    console.log(current_utterance);
-    current_utterance.onend =  (e) => {
-        console.log("SpeechSynthesisUtterance.onend",e);
-      };
-  
+    current_utterance.onend = (e)=> {
+            onendSynthetizer()
+    };  
     current_utterance.onerror = (e) => {
         console.error("SpeechSynthesisUtterance.onerror",e);
       };

@@ -1,11 +1,36 @@
 import * as speechRecognition from "./speechRecognition.js";
+import * as synthetizer from "./speechSynthesis.js"
 
 speechRecognition.enable_debug();
 speechRecognition.init_speech_recognition();
+let is_speaking = false;
+
+let speech_random = (x,y) => {
+    const coreModel = currentModel.internalModel.coreModel;
+    console.log("speech", x, y )
+    if(is_speaking){
+        mover_boca(2,Math.random());
+        setTimeout(()=>{ speech_random(x,y)},100);
+    } else{
+        mover_boca(2,0);
+    }
+}
+
+synthetizer.set_onEnd_synthetizer( ()=>{ 
+    is_speaking = false;
+    console.log("El audio sintetizado ha terminado");
+ });
 
 const recognition_process = data =>{
+    
     document.getElementById("TextDetection").innerText = data;
+    synthetizer.change_pitch(1.5);
+    synthetizer.say(data); 
+    is_speaking = true;
+    speech_random(0,0);
 }
+
+
 
 let recognition_started = false;
 let mouse_hover = true;
