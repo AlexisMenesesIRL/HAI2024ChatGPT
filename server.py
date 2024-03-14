@@ -17,8 +17,6 @@ path = os.path.join(os.path.dirname(__file__))
 
 websockets = {}
 
-
-
 def process_message(data,websocket):
     print(data)
     if data["action"] == "registerID":
