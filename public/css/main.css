@@ -1,4 +1,7 @@
 #BeginRecognition {
+    position: absolute;
+    top: 200px;
+    left: 300px;
     padding: 10px 20px;
     width: 250px;
     font-size: 16px;
@@ -15,4 +18,13 @@
     margin-top: 20px;
     font-size: 18px;
     color: #333;
+    position: absolute;
+    top: 300px;
+    left: 300px;
+}
+
+#live2d{
+    position: absolute;
+    left:0px;
+    top:0px;
 }
