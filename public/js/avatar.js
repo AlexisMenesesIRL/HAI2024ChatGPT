@@ -65,6 +65,7 @@ const videoElement = document.querySelector(".input_video"),
 })();
 
 const onResults = (results) => {
+    console.log(results);
     animateLive2DModel(results.multiFaceLandmarks[0]);
 };
 
@@ -87,11 +88,13 @@ const animateLive2DModel = (points) => {
 
 // update live2d model internal state
 const rigFace = (result, lerpAmount = 0.7) => {
+    console.log(result);
     if (!currentModel || !result) return;
     const coreModel = currentModel.internalModel.coreModel;
 
     currentModel.internalModel.motionManager.update = (...args) => {
         // disable default blink animation
+        console.log(result)
         currentModel.internalModel.eyeBlink = undefined;
 
         coreModel.setParameterValueById(
