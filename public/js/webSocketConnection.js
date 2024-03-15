@@ -1,8 +1,8 @@
-let connection = new WebSocket("ws://localhost/command")
+const connection = new WebSocket("ws://localhost/command")
 let callback = data => console.log(data)
-
+let id;
 connection.onopen = () =>{
-    let id = Math.random().toString(16).slice(2);
+    id = Math.random().toString(16).slice(2);
     connection.send(JSON.stringify({id,action:"registerID"}))
 }
 
@@ -16,6 +16,11 @@ connection.onclose = (e)=>{
 }
 export const set_websocket_message_processing_function = ( process_function ) =>{
     callback = process_function;
+}
+
+export const send  = (data) =>{
+    data.id = id;
+    connection.send(JSON.stringify(data))
 }
  
 export default connection;

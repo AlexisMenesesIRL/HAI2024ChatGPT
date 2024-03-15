@@ -35,7 +35,7 @@ websockets = {}
 
 def get_gpt_answer(messages):
     completion = client.chat.completions.create(
-        model="gpt-3.5-turbo", 
+        model="gpt-3.5-turbo",  
         messages = messages
     )
     return completion.choices[0].message.content
@@ -47,7 +47,7 @@ def process_message(data,websocket):
         websockets[data["id"]]["chat_history"].append({"role":"user","content":data["message"]})
         response = get_gpt_answer(websockets[data["id"]]["chat_history"])
         websockets[data["id"]]["chat_history"].append({"role":"assistant","content":response})
-        websocket.send(json.dumps({"action":"gpt_answer","message":response}))
+        websocket.send_data({"action":"gpt_answer","message":response})
     else:
         print("no action")
 class WebSocketHandler(tornado.websocket.WebSocketHandler):
@@ -62,7 +62,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
 
     def on_message(self,message):
         try:
-            data = json.dumps(message)
+            data = json.loads(message)
             process_message(data,self)
         except TypeError:
             print("error al processar mensaje")

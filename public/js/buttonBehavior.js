@@ -26,7 +26,7 @@ synthetizer.set_onEnd_synthetizer( ()=>{
 const recognition_process = data =>{
     document.getElementById("TextDetection").innerText = data;
     stop_recognition();
-    ws.send(JSON.stringify({"action":"answerChat",message:data}));
+    ws.send({"action":"answerChat",message:data});
 }
 
 let process_message = (message)=>{
