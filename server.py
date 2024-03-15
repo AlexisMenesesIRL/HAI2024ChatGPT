@@ -3,13 +3,6 @@ from openai import OpenAI
 from dotenv import load_dotenv
 load_dotenv()
 
-from tenacity import (
-    retry,
-    stop_after_attempt,
-    wait_random_exponential,
-)
-
-
 import json
 import tornado.ioloop
 import tornado.web
