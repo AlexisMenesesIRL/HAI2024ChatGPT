@@ -33,6 +33,12 @@ path = os.path.join(os.path.dirname(__file__))
 
 websockets = {}
 
+agentBehavior = '''
+Eres un agente virtual.
+Tus respuestas deben ser cortas. No más de 3 oraciones de pocas palabras.
+Has que tus respuestas rimen con el input del usuario.  
+'''
+
 def get_gpt_answer(messages):
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo",  
@@ -42,7 +48,7 @@ def get_gpt_answer(messages):
 def process_message(data,websocket):
     print(data)
     if data["action"] == "registerID":
-        websockets[data["id"]] = {"ws" : websocket, "chat_history":[{"role": "system", "content": "Eres un agente virtual para hablar en clase."}]}
+        websockets[data["id"]] = {"ws" : websocket, "chat_history":[{"role": "system", "content": agentBehavior}]}
     elif data["action"] == "answerChat":
         websockets[data["id"]]["chat_history"].append({"role":"user","content":data["message"]})
         response = get_gpt_answer(websockets[data["id"]]["chat_history"])

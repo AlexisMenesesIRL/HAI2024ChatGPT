@@ -24,6 +24,16 @@
     width: 100px;
 }
 
+#GPTAnswer {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #333;
+    position: absolute;
+    top: 300px;
+    right: 30px;
+    width: 100px;
+}
+
 #live2d{
     position: absolute;
     left:0px;
