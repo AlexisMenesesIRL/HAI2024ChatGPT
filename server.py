@@ -1,3 +1,15 @@
+from openai import OpenAI
+
+from dotenv import load_dotenv
+load_dotenv()
+
+from tenacity import (
+    retry,
+    stop_after_attempt,
+    wait_random_exponential,
+)
+
+
 import json
 import tornado.ioloop
 import tornado.web
@@ -5,6 +17,10 @@ import tornado.websocket
 import os
 import signal
 
+client = OpenAI(
+    # This is the default and can be omitted
+    api_key=os.getenv("OPENAI_API_KEY"),
+)
 
 
 def exit_function(signum,frame):
@@ -17,10 +33,21 @@ path = os.path.join(os.path.dirname(__file__))
 
 websockets = {}
 
+def get_gpt_answer(messages):
+    completion = client.chat.completions.create(
+        model="gpt-3.5-turbo", 
+        messages = messages
+    )
+    return completion.choices[0].message.content
 def process_message(data,websocket):
     print(data)
     if data["action"] == "registerID":
-        websockets[data["id"]] = {"ws" : websocket, "chat_history":[]}
+        websockets[data["id"]] = {"ws" : websocket, "chat_history":[{"role": "system", "content": "Eres un agente virtual para hablar en clase."}]}
+    elif data["action"] == "answerChat":
+        websockets[data["id"]]["chat_history"].append({"role":"user","content":data["message"]})
+        response = get_gpt_answer(websockets[data["id"]]["chat_history"])
+        websockets[data["id"]]["chat_history"].append({"role":"assistant","content":response})
+        websocket.send(json.dumps({"action":"gpt_answer","message":response}))
     else:
         print("no action")
 class WebSocketHandler(tornado.websocket.WebSocketHandler):

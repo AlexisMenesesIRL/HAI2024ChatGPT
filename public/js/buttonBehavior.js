@@ -1,3 +1,4 @@
+import * as ws from "./webSocketConnection.js";
 import * as speechRecognition from "./speechRecognition.js";
 import * as synthetizer from "./speechSynthesis.js"
 
@@ -18,18 +19,27 @@ let speech_random = (x,y) => {
 
 synthetizer.set_onEnd_synthetizer( ()=>{ 
     is_speaking = false;
+    buttonRecognition.disabled = false;
     console.log("El audio sintetizado ha terminado");
  });
 
 const recognition_process = data =>{
-    
     document.getElementById("TextDetection").innerText = data;
-    synthetizer.change_pitch(1.5);
-    synthetizer.say(data); 
-    is_speaking = true;
-    speech_random(0,0);
+    stop_recognition();
+    ws.send(JSON.stringify({"action":"answerChat",message:data}));
 }
 
+let process_message = (message)=>{
+    let process_message = JSON.parse(message);
+    if(process_message.action == "gpt_answer" ) {
+        synthetizer.change_pitch(1.5);
+        synthetizer.say(process_message.message); 
+        is_speaking = true;
+        speech_random(0,0);
+    }
+}
+
+ws.set_websocket_message_processing_function(process_message);
 
 
 let recognition_started = false;
@@ -37,22 +47,29 @@ let mouse_hover = true;
 let buttonRecognition = document.getElementById("BeginRecognition");
 
 
+let stop_recognition = () =>{
+    speechRecognition.stop_recognition();
+    buttonRecognition.style.background = "#38e08c"
+    buttonRecognition.innerText = "Empezar reconocimiento"
+    recognition_started = false;
+    buttonRecognition.disabled = true;
+}
+
 buttonRecognition.onmousedown = ()=>{
     if(!recognition_started){
         speechRecognition.start_recognition();
         recognition_started = true;
         buttonRecognition.innerText = "reconociento"
         buttonRecognition.style.background = "#FF0000"
+    } else{
+        stop_recognition();
     }
     
 }
 
 buttonRecognition.onmouseup = (e)=>{
     if(mouse_hover) {
-        speechRecognition.stop_recognition();
-        buttonRecognition.style.background = "#38e08c"
-        buttonRecognition.innerText = "Empezar reconocimiento"
-        recognition_started = false;
+        stop_recognition();
     }
 }
 
