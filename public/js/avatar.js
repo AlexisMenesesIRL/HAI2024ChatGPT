@@ -26,10 +26,10 @@ const videoElement = document.querySelector(".input_video"),
 
     // load live2d model
     currentModel = await Live2DModel.from(modelUrl, { autoInteract: false });
-    currentModel.scale.set(0.4);
+    currentModel.scale.set(0.5);
     currentModel.interactive = true;
     currentModel.anchor.set(0.5, 0.5);
-    currentModel.position.set(window.innerWidth * 0.5, window.innerHeight * 0.8);
+    currentModel.position.set(window.innerWidth * 0.5, window.innerHeight * 1);
 
     // Add events to drag model
     currentModel.on("pointerdown", (e) => {

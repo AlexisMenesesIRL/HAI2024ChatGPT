@@ -419,6 +419,7 @@ var __pow = Math.pow,
             this.focusController.update(t)
         }
         destroy() {
+            console.log("destroying....");
             this.destroyed = !0, this.emit("destroy"), this.motionManager.destroy(), this.motionManager = void 0
         }
     }
