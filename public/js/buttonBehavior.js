@@ -8,7 +8,6 @@ let is_speaking = false;
 
 let speech_random = (x,y) => {
     const coreModel = currentModel.internalModel.coreModel;
-    console.log("speech", x, y )
     if(is_speaking){
         mover_boca(2,Math.random());
         setTimeout(()=>{ speech_random(x,y)},100);
